@@ -8,9 +8,6 @@ import tarfile
 import tempfile
 import venv
 
-from .cuda_utils import CudaDetect
-
-
 class VenvAutoSetup:
     def __init__(self, environment_path):
         self.env_path = environment_path
@@ -86,7 +83,7 @@ class VenvAutoSetup:
                                               suffix='.bat' if self._on_win else None,
                                               delete=False)
 
-        torch_line = f'"{self.py_exe}" -m pip install torch=={torch_version}+cu{cuda_version} --extra-index-url {torch_url}/cu{cuda_version}'
+        torch_line = f'"{self.py_exe}" -m pip install torch=={torch_version}+cu{cuda_version} --index-url {torch_url}/cu{cuda_version}'
 
         with ba_file as f:
             if self._on_win:
@@ -237,7 +234,7 @@ def install_headers(env_path, download_dir):
         shutil.copy(src_path, dst_path)
 
 
-def setup_environment(environment_path, with_pip=True, torch_version="1.11.0", cuda_version='113'):
+def setup_environment(environment_path, with_pip=True, torch_version="2.0.0", cuda_version='117'):
     ve_setup = VenvAutoSetup(environment_path)
     ve_setup.create_venv(with_pip=with_pip)
 
@@ -256,7 +253,7 @@ def setup_environment(environment_path, with_pip=True, torch_version="1.11.0", c
     subprocess.check_call(torch_install_script)
 
     # install torch-geometric
-    if cuda_version in ('101', '102', '111'):
+    if cuda_version in ('101', '102', '111', '117', '118'):
         # wheels are provided for these versions
         find_link = f"-f https://pytorch-geometric.com/whl/torch-{torch_version}+cu{cuda_version}.html"
         for pkg in ("torch-scatter", "torch-sparse", "torch-cluster", "torch-geometric"):

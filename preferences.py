@@ -39,6 +39,7 @@ class BrignetPrefs(bpy.types.AddonPreferences):
     @staticmethod
     def check_cuda():
         BrignetPrefs._cuda_info = cuda_utils.CudaDetect()
+        print(cuda_utils.CudaDetect())
 
     @staticmethod
     def add_module_paths():

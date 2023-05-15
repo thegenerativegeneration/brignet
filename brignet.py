@@ -144,6 +144,7 @@ class BrigNetPredict(bpy.types.Operator):
     def poll(cls, context):
         modules_found = bpy.context.preferences.addons[__package__].preferences.modules_found
         if not modules_found:
+            print("Modules not found.")
             # TODO: we should rather gray out the whole panel and display a warning
             return False
 
